@@ -7,31 +7,29 @@ import React, { useEffect, useMemo, useState } from 'react';
 import ProductPagination from '@/components/productPagination';
 import Search from '@/components/search';
 import { useSearch } from '@/hooks/useSearch';
+import { useProducts } from '@/hooks/useProducts';
+import { useSearchedProducts } from '@/hooks/useSearchedProducts';
 
 const Products:React.FC = ()=>{
-    const [products,setProducts] = useState<Product[]>([])
+    
     const [limit,setLimit] = useState(10)
     const [skip,setSkip] = useState(0)
 
+    const [products] = useProducts(limit,skip)
+
     const [searchTerm,setSearchTerm] = useState<string>('')
 
-    const getSearchedProducts = useMemo<Product[]>(():Product[] =>{
-        return useSearch(products, searchTerm);
-    },[searchTerm])
+    const [getSearchedProducts] = useSearchedProducts(products,searchTerm)
 
     const [totalPages] = usePagination(100,limit)
 
-    useEffect(()=>{
-        fetchProducts(limit,skip,setProducts)
-    },[limit,skip])
-
     return (
-        <div>
+        <>
             <Typography variant="h3" sx={{textAlign:'center'}}>Products</Typography>
             <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm}  />
             <ProductsList products={searchTerm ? getSearchedProducts : products} />
             <ProductPagination totalPages={totalPages} setSkip={setSkip} />
-        </div>
+        </>
     );
 }
 

@@ -1,4 +1,4 @@
-import { TextField } from '@mui/material';
+import { Container, TextField } from '@mui/material';
 import React from 'react';
 
 interface Props{
@@ -8,13 +8,13 @@ interface Props{
 
 const Search:React.FC<Props> = ({searchTerm,setSearchTerm}) =>{
     return (
-        <div style={{display:'flex',justifyContent:'center'}}>
+        <Container style={{display:'flex',justifyContent:'center'}}>
             <TextField variant="standard" label='Search'
             sx={{width:'50%'}}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
              />
-        </div>
+        </Container>
     );
 }
 

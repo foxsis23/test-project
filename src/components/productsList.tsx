@@ -2,6 +2,7 @@ import { Product } from '@/types/product';
 import Grid from '@mui/material/Grid';
 import React from 'react';
 import ProductItem from './productItem';
+import { Typography } from '@mui/material';
 
 interface Props{
     products:Product[]
@@ -18,7 +19,7 @@ const productsList:React.FC<Props> = ({products}) =>{
                 product={product}
                 />
             ):(
-                <h1>No products!</h1>
+                <Typography variant='h3'>No products!</Typography>
             )}
         </Grid>
     );
