@@ -1,34 +1,36 @@
-import { fetchProducts } from '@/API/fetchProducts';
+
 import ProductsList from '@/components/productsList';
-import { Product } from '@/types/product';
 import Typography from '@mui/material/Typography';
 import { usePagination } from '@/hooks/usePagination';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ProductPagination from '@/components/productPagination';
 import Search from '@/components/search';
-import { useSearch } from '@/hooks/useSearch';
 import { useProducts } from '@/hooks/useProducts';
 import { useSearchedProducts } from '@/hooks/useSearchedProducts';
+import { Product } from '@/types/product';
 
 const Products:React.FC = ()=>{
     
     const [limit,setLimit] = useState(10)
     const [skip,setSkip] = useState(0)
 
-    const [products] = useProducts(limit,skip)
+    const [allProducts,setAllProducts] = useState<Product[]>([])
+    const [products] = useProducts(limit,skip,setAllProducts)
 
     const [searchTerm,setSearchTerm] = useState<string>('')
 
-    const [getSearchedProducts] = useSearchedProducts(products,searchTerm)
+    const [getSearchedProducts] = useSearchedProducts(allProducts,searchTerm)
 
     const [totalPages] = usePagination(100,limit)
+
+
 
     return (
         <>
             <Typography variant="h3" sx={{textAlign:'center'}}>Products</Typography>
             <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm}  />
             <ProductsList products={searchTerm ? getSearchedProducts : products} />
-            <ProductPagination totalPages={totalPages} setSkip={setSkip} />
+            <ProductPagination totalPages={totalPages} setSkip={setSkip} setSearchTerm={setSearchTerm} />
         </>
     );
 }
